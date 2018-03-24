@@ -19,7 +19,7 @@ const LoginName = ({ height, data: { loading, error, viewer } }) => {
   }
   return (
     <Typography
-      type="body2"
+      variant="body2"
       style={{ display: 'inline-flex', alignItems: 'center' }}
     >
       <img

@@ -23,7 +23,7 @@ const TopBar = ({ setDrawerOpen }) => (
       >
         <MenuIcon />
       </IconButton>
-      <Typography type="title" style={{ flex: 1 }}>LimeGreenJS</Typography>
+      <Typography variant="title" style={{ flex: 1 }}>LimeGreenJS</Typography>
       <LoginName height={30} />
     </Toolbar>
   </AppBar>

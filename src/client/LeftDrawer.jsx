@@ -24,7 +24,7 @@ const LeftDrawer = ({
   >
     <List>
       <ListItem>
-        <Typography type="title">LimeGreenJS</Typography>
+        <Typography variant="title">LimeGreenJS</Typography>
       </ListItem>
       <Divider />
       {loading && <LinearProgress />}

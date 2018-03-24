@@ -27,7 +27,7 @@ const MyHeader = ({ item }) => (
     <span>{item.owner.login}</span>
     {item.owner.login === 'LimeGreenJS' && (
       <Typography
-        type="caption"
+        variant="caption"
         style={{
           backgroundColor: 'silver',
           color: 'white',
@@ -50,18 +50,18 @@ const CardItem = ({ item }) => (
       subheader={<MyHeader item={item} />}
     />
     <CardContent style={{ minHeight: 100, padding: 8 }}>
-      <Typography type="title" style={{ marginBottom: 4 }}>{item.name}</Typography>
-      <Typography type="body1">{getDescription(item)}</Typography>
+      <Typography variant="title" style={{ marginBottom: 4 }}>{item.name}</Typography>
+      <Typography variant="body1">{getDescription(item)}</Typography>
     </CardContent>
     <CardActions>
       <a href={createRunUrl(item)} target="_blank">
-        <Button raised color="secondary">Run app</Button>
+        <Button variant="raised" color="secondary">Run app</Button>
       </a>
       <a href={item.url} target="_blank">
-        <Button raised color="default">Show code</Button>
+        <Button variant="raised" color="default">Show code</Button>
       </a>
       <Typography
-        type="caption"
+        variant="caption"
         style={{
           flexGrow: 2,
           display: 'flex',
