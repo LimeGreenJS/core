@@ -1,8 +1,8 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'production',
   entry: [
     './src/client/index.js',
   ],
@@ -16,11 +16,6 @@ module.exports = {
       filename: 'index.html',
       template: './src/client/index.html',
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   module: {
     rules: [{

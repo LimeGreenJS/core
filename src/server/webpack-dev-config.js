@@ -1,7 +1,7 @@
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: [
     './src/client/index.js',
   ],
@@ -10,14 +10,11 @@ module.exports = {
     chunkFilename: '[chunkhash]-chunk.js',
     publicPath: '/',
   },
-  devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/client/index.html',
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
   ],
   module: {
     rules: [{

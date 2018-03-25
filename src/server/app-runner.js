@@ -20,6 +20,7 @@ const volCache = LRU(20); // key = github-zip-url, value = fs-like-volume
 
 const createWebpackConfig = () => ({
   context: '/',
+  mode: 'production',
   entry: [
     '/index.js',
   ],
@@ -34,11 +35,6 @@ const createWebpackConfig = () => ({
       filename: 'index.html',
       template: `${nodeModulesDir}/raw-loader!/index.html`,
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-    new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   module: {
     rules: [{
