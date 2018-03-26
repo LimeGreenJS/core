@@ -14,12 +14,12 @@ import IntroDialog from './IntroDialog';
 
 const TopBar = () => (
   <ApolloConsumer>
-    {cache => (
+    {client => (
       <AppBar>
         <Toolbar>
           <IconButton
             aria-label="Menu"
-            onClick={() => cache.writeData({ data: { drawerOpen: true } })}
+            onClick={() => client.writeData({ data: { drawerOpen: true } })}
           >
             <MenuIcon />
           </IconButton>

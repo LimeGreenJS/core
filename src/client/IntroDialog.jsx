@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query, ApolloConsumer } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import Button from 'material-ui/Button';
 import Dialog, {
@@ -22,39 +22,35 @@ const GET_DIALOG_OPEN = gql`
 const Transition = props => <Slide direction="up" {...props} />;
 
 const IntroDialog = () => (
-  <ApolloConsumer>
-    {cache => (
-      <Query query={GET_DIALOG_OPEN}>
-        {({ data }) => (
-          <Dialog
-            open={data.dialogOpen}
-            transition={Transition}
-            onClose={() => cache.writeData({ data: { dialogOpen: false } })}
-          >
-            <DialogTitle>What is LimeGreenJS</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                LimeGreenJS is a React-based Single Page Application runner.
-                It takes code from a GitHub repository and serves compiled code.
-                The generated code is for production with a unique URL.
-              </DialogContentText>
-              <DialogContentText>
-                LimeGreenJS is also a repository for example apps for learning
-                how to code React/GraphQL Single Page Applications.
-                The apps may connect to any GraphQL-based backends.
-                Happy coding!
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => cache.writeData({ data: { dialogOpen: false } })} color="secondary" autoFocus>
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-      </Query>
+  <Query query={GET_DIALOG_OPEN}>
+    {({ data, client }) => (
+      <Dialog
+        open={data.dialogOpen}
+        transition={Transition}
+        onClose={() => client.writeData({ data: { dialogOpen: false } })}
+      >
+        <DialogTitle>What is LimeGreenJS</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            LimeGreenJS is a React-based Single Page Application runner.
+            It takes code from a GitHub repository and serves compiled code.
+            The generated code is for production with a unique URL.
+          </DialogContentText>
+          <DialogContentText>
+            LimeGreenJS is also a repository for example apps for learning
+            how to code React/GraphQL Single Page Applications.
+            The apps may connect to any GraphQL-based backends.
+            Happy coding!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => client.writeData({ data: { dialogOpen: false } })} color="secondary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     )}
-  </ApolloConsumer>
+  </Query>
 );
 
 export default IntroDialog;

@@ -16,13 +16,19 @@ import red from 'material-ui/colors/red';
 import MainLayout from './MainLayout';
 import { DIALOG_VERSION } from './IntroDialog';
 
-let initialDialogOpen = true;
-try {
-  initialDialogOpen = localStorage.getItem('DIALOG_VERSION') < DIALOG_VERSION;
-  localStorage.setItem('DIALOG_VERSION', DIALOG_VERSION);
-} catch (e) {
-  // ignored
-}
+const getInitialState = () => {
+  let initialDialogOpen = true;
+  try {
+    initialDialogOpen = localStorage.getItem('DIALOG_VERSION') < DIALOG_VERSION;
+    localStorage.setItem('DIALOG_VERSION', DIALOG_VERSION);
+  } catch (e) {
+    // ignored
+  }
+  return {
+    drawerOpen: false,
+    dialogOpen: initialDialogOpen,
+  };
+};
 
 const apolloClientMap = new Map();
 const createApolloClient = (accessToken) => {
@@ -36,13 +42,7 @@ const createApolloClient = (accessToken) => {
       authorization: `Bearer ${accessToken}`,
     },
   });
-  const stateLink = withClientState({
-    cache,
-    defaults: {
-      drawerOpen: false,
-      dialogOpen: initialDialogOpen,
-    },
-  });
+  const stateLink = withClientState({ cache, defaults: getInitialState() });
   const link = ApolloLink.from([stateLink, httpLink]);
   const client = new ApolloClient({ link, cache });
   apolloClientMap.set(accessToken, client);

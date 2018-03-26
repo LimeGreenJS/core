@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { graphql, Query, ApolloConsumer } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import Drawer from 'material-ui/Drawer';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
@@ -19,16 +19,14 @@ const GET_DRAWER_OPEN = gql`
 }
 `;
 
-const LeftDrawer = ({
-  data: { loading, viewer },
-}) => (
-  <ApolloConsumer>
-    {cache => (
+const LeftDrawer = () => (
+  <Query query={QUERY_LOGIN_INFO} fetchPolicy="cache-only">
+    {({ loading, data }) => (
       <Query query={GET_DRAWER_OPEN}>
-        {({ data }) => (
+        {({ data: { drawerOpen }, client }) => (
           <Drawer
-            open={data.drawerOpen}
-            onClose={() => cache.writeData({ data: { drawerOpen: false } })}
+            open={drawerOpen}
+            onClose={() => client.writeData({ data: { drawerOpen: false } })}
           >
             <List>
               <ListItem>
@@ -38,12 +36,12 @@ const LeftDrawer = ({
               {loading && <LinearProgress />}
               <ListItem
                 button
-                onClick={() => cache.writeData({ data: { drawerOpen: false, dialogOpen: true } })}
+                onClick={() => client.writeData({ data: { drawerOpen: false, dialogOpen: true } })}
               >
                 <ListItemIcon><InfoOutlineIcon /></ListItemIcon>
                 <ListItemText primary="About this" />
               </ListItem>
-              {!loading && !viewer && (
+              {!loading && !data.viewer && (
                 <a href="/auth/github">
                   <ListItem button>
                     <ListItemIcon><HomeIcon /></ListItemIcon>
@@ -51,7 +49,7 @@ const LeftDrawer = ({
                   </ListItem>
                 </a>
               )}
-              {!loading && viewer && (
+              {!loading && data.viewer && (
                 <a href="/">
                   <ListItem button>
                     <ListItemIcon><ExitToAppIcon /></ListItemIcon>
@@ -64,10 +62,7 @@ const LeftDrawer = ({
         )}
       </Query>
     )}
-  </ApolloConsumer>
+  </Query>
 );
 
-const withQuery = graphql(QUERY_LOGIN_INFO, {
-  options: { fetchPolicy: 'cache-only' },
-});
-export default withQuery(LeftDrawer);
+export default LeftDrawer;
