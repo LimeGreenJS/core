@@ -1,7 +1,5 @@
-/* eslint-env browser */
-
 import React from 'react';
-import { composeWithState } from 'react-compose-state';
+import { ApolloConsumer } from 'react-apollo';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -12,21 +10,25 @@ import MenuIcon from 'material-ui-icons/Menu';
 import CardList from './CardList';
 import LeftDrawer from './LeftDrawer';
 import LoginName from './LoginName';
-import IntroDialog, { DIALOG_VERSION } from './IntroDialog';
+import IntroDialog from './IntroDialog';
 
-const TopBar = ({ setDrawerOpen }) => (
-  <AppBar>
-    <Toolbar>
-      <IconButton
-        aria-label="Menu"
-        onClick={() => setDrawerOpen(true)}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Typography variant="title" style={{ flex: 1 }}>LimeGreenJS</Typography>
-      <LoginName height={30} />
-    </Toolbar>
-  </AppBar>
+const TopBar = () => (
+  <ApolloConsumer>
+    {cache => (
+      <AppBar>
+        <Toolbar>
+          <IconButton
+            aria-label="Menu"
+            onClick={() => cache.writeData({ data: { drawerOpen: true } })}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="title" style={{ flex: 1 }}>LimeGreenJS</Typography>
+          <LoginName height={30} />
+        </Toolbar>
+      </AppBar>
+    )}
+  </ApolloConsumer>
 );
 
 const MainLayout = props => (
@@ -40,17 +42,4 @@ const MainLayout = props => (
   </div>
 );
 
-let initialDialogOpen = true;
-try {
-  initialDialogOpen = localStorage.getItem('DIALOG_VERSION') < DIALOG_VERSION;
-  localStorage.setItem('DIALOG_VERSION', DIALOG_VERSION);
-} catch (e) {
-  // ignored
-}
-
-const withState = composeWithState({
-  drawerOpen: false,
-  dialogOpen: initialDialogOpen,
-});
-
-export default withState(MainLayout);
+export default MainLayout;
