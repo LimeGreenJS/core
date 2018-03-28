@@ -12,7 +12,45 @@ export const ITEMS = [
     url: 'https://github.com/LimeGreenJS/simple-blog',
     ref: {
       target: {
-        oid: 'ddda8017eece6767a6da8db5b7a0d2295abe0488',
+        oid: 'e89be1d2157495549287b1ef35f941dc54814262',
+        __typename: 'Commit',
+      },
+      __typename: 'Ref',
+    },
+    stargazers: { totalCount: 3, __typename: 'StargazerConnection' },
+    __typename: 'Repository',
+  },
+  {
+    owner: {
+      login: 'LimeGreenJS',
+      avatarUrl: 'https://avatars3.githubusercontent.com/u/32977521?v=4',
+      __typename: 'Organization',
+    },
+    name: 'simple-todos',
+    description: 'LimeGreenJS-enabled simple todos example',
+    url: 'https://github.com/LimeGreenJS/simple-todos',
+    ref: {
+      target: {
+        oid: 'af481dc440194d98a0b07706a3a82847263a06c8',
+        __typename: 'Commit',
+      },
+      __typename: 'Ref',
+    },
+    stargazers: { totalCount: 1, __typename: 'StargazerConnection' },
+    __typename: 'Repository',
+  },
+  {
+    owner: {
+      login: 'LimeGreenJS',
+      avatarUrl: 'https://avatars3.githubusercontent.com/u/32977521?v=4',
+      __typename: 'Organization',
+    },
+    name: 'dynamic-import',
+    description: 'LimeGreenJS-enabled dynamic import example',
+    url: 'https://github.com/LimeGreenJS/dynamic-import',
+    ref: {
+      target: {
+        oid: '4795c402ad7803a7b43f25c397443554988ea8da',
         __typename: 'Commit',
       },
       __typename: 'Ref',
@@ -45,55 +83,17 @@ export const ITEMS = [
       avatarUrl: 'https://avatars3.githubusercontent.com/u/32977521?v=4',
       __typename: 'Organization',
     },
-    name: 'simple-todos',
-    description: 'LimeGreenJS-enabled simple todos example',
-    url: 'https://github.com/LimeGreenJS/simple-todos',
-    ref: {
-      target: {
-        oid: '88a551051961dc2c42004dbfb335fd65e39dc65d',
-        __typename: 'Commit',
-      },
-      __typename: 'Ref',
-    },
-    stargazers: { totalCount: 0, __typename: 'StargazerConnection' },
-    __typename: 'Repository',
-  },
-  {
-    owner: {
-      login: 'LimeGreenJS',
-      avatarUrl: 'https://avatars3.githubusercontent.com/u/32977521?v=4',
-      __typename: 'Organization',
-    },
-    name: 'dynamic-import',
-    description: 'LimeGreenJS-enabled dynamic import example',
-    url: 'https://github.com/LimeGreenJS/dynamic-import',
-    ref: {
-      target: {
-        oid: '4795c402ad7803a7b43f25c397443554988ea8da',
-        __typename: 'Commit',
-      },
-      __typename: 'Ref',
-    },
-    stargazers: { totalCount: 0, __typename: 'StargazerConnection' },
-    __typename: 'Repository',
-  },
-  {
-    owner: {
-      login: 'LimeGreenJS',
-      avatarUrl: 'https://avatars3.githubusercontent.com/u/32977521?v=4',
-      __typename: 'Organization',
-    },
     name: 'standard-todos',
     description: 'LimeGreenJS-enabled standard todos example',
     url: 'https://github.com/LimeGreenJS/standard-todos',
     ref: {
       target: {
-        oid: 'b3ec58c29b2598d74c24a203515906ceb2f9c761',
+        oid: '733ae9d5b5fbd67359a8240b25b4bcbe546e469e',
         __typename: 'Commit',
       },
       __typename: 'Ref',
     },
-    stargazers: { totalCount: 0, __typename: 'StargazerConnection' },
+    stargazers: { totalCount: 1, __typename: 'StargazerConnection' },
     __typename: 'Repository',
   },
   {
