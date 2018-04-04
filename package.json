@@ -47,16 +47,16 @@
     "material-ui-icons": "^1.0.0-beta.36",
     "memfs": "^2.8.0",
     "raw-loader": "^0.5.1",
-    "react": "^16.3.0",
+    "react": "^16.3.1",
     "react-apollo": "^2.1.2",
     "react-compose-state": "^1.1.0",
-    "react-dom": "^16.3.0",
+    "react-dom": "^16.3.1",
     "react-infinite-scroller": "^1.1.3",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "unionfs": "^3.0.2",
     "unzipper": "^0.8.12",
-    "webpack": "^4.4.1"
+    "webpack": "^4.5.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
