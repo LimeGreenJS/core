@@ -1,7 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
-import { composeWithState } from 'react-compose-state';
+import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import Grid from 'material-ui/Grid';
@@ -29,56 +28,29 @@ const renderNodes = nodes => (
   </Grid>
 );
 
-const CardList = ({
-  filterType,
-  setFilterType,
-  data: {
-    loading, search, loadMore,
-  } = {},
-}) => {
-  if (loading) {
-    return renderLoading();
-  }
-  if (!search) {
-    return renderNodes(PRELOADED_NODES);
-  }
-  const {
-    nodes = [],
-    pageInfo: { hasNextPage } = {},
-  } = search;
-  return (
-    <div>
-      <Tabs
-        value={filterType}
-        onChange={(event, value) => setFilterType(value)}
-        indicatorColor="primary"
-        textColor="primary"
-        fullWidth
-        style={{ backgroundColor: '#f9f9f9' }}
-      >
-        <Tab label="Official" value="official" />
-        <Tab label="My Repos" value="mine" />
-        <Tab label="All" value="all" />
-      </Tabs>
-      <InfiniteScroll
-        loadMore={loadMore}
-        hasMore={hasNextPage}
-        loader={renderLoading()}
-      >
-        {renderNodes(nodes)}
-      </InfiniteScroll>
-    </div>
-  );
-};
-
-const withState = composeWithState({
-  filterType: 'official',
-});
-
-const withLoginInfo = graphql(QUERY_LOGIN_INFO, {
-  name: 'loginInfo',
-  options: { fetchPolicy: 'cache-only' },
-});
+const renderList = (nodes, hasNextPage, filterType, setFilterType, loadMore) => (
+  <div>
+    <Tabs
+      value={filterType}
+      onChange={(event, value) => setFilterType(value)}
+      indicatorColor="primary"
+      textColor="primary"
+      fullWidth
+      style={{ backgroundColor: '#f9f9f9' }}
+    >
+      <Tab label="Official" value="official" />
+      <Tab label="My Repos" value="mine" />
+      <Tab label="All" value="all" />
+    </Tabs>
+    <InfiniteScroll
+      loadMore={loadMore}
+      hasMore={hasNextPage}
+      loader={renderLoading()}
+    >
+      {renderNodes(nodes)}
+    </InfiniteScroll>
+  </div>
+);
 
 const QUERY_REPOS = gql`
 query ($q: String!, $end: String){
@@ -111,43 +83,71 @@ query ($q: String!, $end: String){
 }
 `;
 
-const withQuery = graphql(QUERY_REPOS, {
-  skip: ({ loginInfo = {} }) => !loginInfo.viewer,
-  options: (props) => {
-    const { filterType, loginInfo } = props;
-    const { viewer: { login } = {} } = loginInfo || {};
-    const criteria = {
-      official: 'user:LimeGreenJS',
-      mine: `user:${login}`,
-      all: '',
-    }[filterType];
-    const q = `LimeGreenJS-enabled in:description is:public fork:true ${criteria} sort:stars`;
-    return {
-      variables: { q },
-    };
-  },
-  props: ({ data }) => ({
-    data: {
-      ...data,
-      loadMore: () => data.fetchMore({
-        variables: { end: data.search.pageInfo.endCursor },
-        updateQuery: (previousResult = {}, { fetchMoreResult = {} }) => {
-          const previousSearch = previousResult.search || {};
-          const currentSearch = fetchMoreResult.search || {};
-          const previousNodes = previousSearch.nodes || [];
-          const currentNodes = currentSearch.nodes || [];
-          return {
-            ...previousResult,
-            search: {
-              ...previousSearch,
-              nodes: [...previousNodes, ...currentNodes],
-              pageInfo: currentSearch.pageInfo,
-            },
-          };
-        },
-      }),
-    },
-  }),
-});
+const GET_FILTER_TYPE = gql`
+{
+  filterType @client
+}
+`;
 
-export default withState(withLoginInfo(withQuery(CardList)));
+const getQ = (filterType, viewer) => {
+  const { login } = viewer || {};
+  const criteria = {
+    official: 'user:LimeGreenJS',
+    mine: `user:${login}`,
+    all: '',
+  }[filterType];
+  return `LimeGreenJS-enabled in:description is:public fork:true ${criteria} sort:stars`;
+};
+
+const CardList = () => (
+  <Query query={QUERY_LOGIN_INFO} fetchPolicy="cache-only">
+    {({ data: { viewer } = {} }) => (
+      <Query query={GET_FILTER_TYPE}>
+        {({ data: { filterType }, client }) => (
+          // The next line is a workaround as skip does not work as expected.
+          !viewer ? renderNodes(PRELOADED_NODES) :
+          <Query
+            skip={!viewer}
+            query={QUERY_REPOS}
+            variables={{ q: getQ(filterType, viewer) }}
+          >
+            {({ loading, data, fetchMore }) => {
+              if (loading) {
+                return renderLoading();
+              }
+              if (!data.search) {
+                return renderNodes(PRELOADED_NODES);
+              }
+              const {
+                nodes = [],
+                pageInfo: { hasNextPage } = {},
+              } = data.search;
+              const setFilterType = value =>
+                client.writeData({ data: { filterType: value } });
+              const loadMore = () => fetchMore({
+                variables: { end: data.search.pageInfo.endCursor },
+                updateQuery: (previousResult = {}, { fetchMoreResult = {} }) => {
+                  const previousSearch = previousResult.search || {};
+                  const currentSearch = fetchMoreResult.search || {};
+                  const previousNodes = previousSearch.nodes || [];
+                  const currentNodes = currentSearch.nodes || [];
+                  return {
+                    ...previousResult,
+                    search: {
+                      ...previousSearch,
+                      nodes: [...previousNodes, ...currentNodes],
+                      pageInfo: currentSearch.pageInfo,
+                    },
+                  };
+                },
+              });
+              return renderList(nodes, hasNextPage, filterType, setFilterType, loadMore);
+            }}
+          </Query>
+        )}
+      </Query>
+    )}
+  </Query>
+);
+
+export default CardList;

@@ -27,6 +27,7 @@ const getInitialState = () => {
   return {
     drawerOpen: false,
     dialogOpen: initialDialogOpen,
+    filterType: 'official',
   };
 };
 
