@@ -49,12 +49,13 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   const opts = {
     config: require('./webpack-dev-config'),
-    hot: { port: 33102 },
+    hotClient: { port: 33102 },
   };
-  app.use(require('koa-webpack')(opts));
+  (async () => {
+    app.use(await require('koa-webpack')(opts));
+  })();
 }
 
-const port = process.env.PORT ||
-  (process.env.NODE_ENV === 'production' && 33100) || 33101;
+const port = process.env.PORT || (process.env.NODE_ENV === 'production' && 33100) || 33101;
 app.listen(port);
 console.log('Listening on', port);
