@@ -25,7 +25,9 @@ const LoginName = ({ height }) => (
       if (error) {
         return (
           <a href="/auth/github">
-            <Button>Log in with GitHub</Button>
+            <Button>
+              Log in with GitHub
+            </Button>
           </a>
         );
       }

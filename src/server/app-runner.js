@@ -124,9 +124,9 @@ const serveFile = (owner, name, commit) => async (ctx) => {
     const content = vol.readFileSync(`/build${urlPath}`, 'utf-8');
     ctx.body = content;
     ctx.type = urlPath.split('.').pop();
-    const cacheControl = urlPath === '/index.html' ?
-      `public, max-age=${ONE_DAY}` :
-      `public, max-age=${ONE_YEAR}, immutable`;
+    const cacheControl = urlPath === '/index.html'
+      ? `public, max-age=${ONE_DAY}`
+      : `public, max-age=${ONE_YEAR}, immutable`;
     ctx.set('Cache-Control', cacheControl);
   } catch (e) {
     ctx.status = 404;
