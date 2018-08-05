@@ -109,7 +109,7 @@ const buildVol = async (url) => {
 };
 
 const parseHostname = (ctx) => {
-  const match = /^([\w-]+)\.([\w-]+)\.([\w-]+)\.(limegreenjsapp\.axlight\.com|localhost)/.exec(ctx.hostname);
+  const match = /^([\w-]+)\.([\w-]+)\.([\w-]+)\.(limegreenjsapp\.axlight\.com|limegreenjs-\w+\.appspot\.com|localhost)/.exec(ctx.hostname);
   return match ? { owner: match[3], name: match[2], commit: match[1] } : {};
 };
 
@@ -129,6 +129,7 @@ const serveFile = (owner, name, commit) => async (ctx) => {
       : `public, max-age=${ONE_YEAR}, immutable`;
     ctx.set('Cache-Control', cacheControl);
   } catch (e) {
+    console.log('unable to serve file in app-runner', e);
     ctx.status = 404;
   }
 };
