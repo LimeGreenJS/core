@@ -10,6 +10,8 @@
     "start-dev": "NODE_ENV=development npm start",
     "prewebpack": "rm -rf build/client",
     "webpack": "webpack --config src/server/webpack-prod-config.js",
+    "predeploy": "npm run webpack",
+    "deploy": "gcloud app deploy app.yaml --configuration limegreenjs",
     "test": "npm run eslint",
     "eslint": "eslint src"
   },
