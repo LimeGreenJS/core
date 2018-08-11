@@ -9,7 +9,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LRU = require('lru-cache');
 
-const nodeModulesDir = path.resolve(__dirname, '../../node_modules');
+const nodeModulesDir = path.join(__dirname, '../../node_modules');
 const nodeModulesFs = linkfs.link(fs, [nodeModulesDir, nodeModulesDir]);
 
 const patchVol = (vol) => {

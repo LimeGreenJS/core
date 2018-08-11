@@ -11,7 +11,7 @@
     "prewebpack": "rm -rf build/client",
     "webpack": "webpack --config src/server/webpack-prod-config.js",
     "predeploy": "npm run webpack",
-    "deploy": "gcloud app deploy app.yaml --configuration limegreenjs",
+    "deploy": "gcloud app deploy app.yaml --configuration limegreenjs --quiet",
     "test": "npm run eslint",
     "eslint": "eslint src"
   },
